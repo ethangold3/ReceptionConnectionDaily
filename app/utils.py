@@ -2,19 +2,18 @@ import random
 import networkx as nx
 
 def select_daily_players(G):
-    start_candidates = [node for node, degree in G.degree() if degree > 10]
-    start_player = random.choice(start_candidates)
-    
-    current = start_player
-    path_length = random.randint(5, 10)
-    for _ in range(path_length):
-        neighbors = list(G.neighbors(current))
-        if not neighbors:
-            break
-        current = random.choice(neighbors)
-    end_player = current
-
-    return start_player, end_player
+    while True:
+        start_candidates = [node for node, degree in G.degree() if degree > 10]
+        start_player = random.choice(start_candidates)
+        
+        # Get all nodes that are exactly 5 steps away from the start_player
+        nodes_at_distance_5 = [node for node, distance in nx.single_source_shortest_path_length(G, start_player).items() if distance == 5]
+        
+        if nodes_at_distance_5:
+            end_player = random.choice(nodes_at_distance_5)
+            # Verify that the shortest path is indeed 5
+            if nx.shortest_path_length(G, start_player, end_player) == 5:
+                return start_player, end_player
 
 def calculate_score(G, path):
     if len(path) < 2:

@@ -14,6 +14,10 @@ def update_daily_players():
     start, end = select_daily_players(G)
     with open(daily_players_path, "w") as f:
         f.write(f"{date.today()}\n{start}\n{end}")
+    print(f"Updated daily players: Start = {start}, End = {end}")
+    # Verify the shortest path length
+    path_length = nx.shortest_path_length(G, start, end)
+    print(f"Shortest path length: {path_length}")
 
 if __name__ == "__main__":
     update_daily_players()
