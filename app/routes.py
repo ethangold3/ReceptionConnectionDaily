@@ -18,7 +18,7 @@ def index():
         date, start_player_id, end_player_id = f.read().splitlines()
     start_player = format_player(start_player_id)
     end_player = format_player(end_player_id)
-    return render_template('index.html', start_player=start_player, end_player=end_player)
+    return render_template('index.html', start_player=start_player, end_player=end_player, start_player_id=start_player_id, end_player_id=end_player_id)
 @app.route('/move', methods=['POST'])
 def move():
     data = request.json
@@ -89,3 +89,9 @@ def format_player(player_id):
     position = node.get('position', 'Unknown')
     team_abbr = node.get('team_abbr', 'Unknown')
     return f"{display_name} ({position} - {team_abbr})"
+
+def get_player_id(player_name):
+    for node, data in G.nodes(data=True):
+        if data.get('display_name', '') == player_name:
+            return node
+    return None

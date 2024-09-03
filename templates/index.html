@@ -12,12 +12,40 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Add this right after the opening body tag -->
+    <div id="how-to-play-popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>How to Play Reception Connection Daily</h2>
+            <p>Connect the start player to the end player through NFL passing connections.</p>
+            <ol>
+                <li>Start with the given player.</li>
+                <li>Enter the name of a player who has caught a pass from or thrown a pass to the current player.</li>
+                <li>Continue until you reach the end player.</li>
+                <li>Come back tomorrow for a new pairing of players.</li>
+            </ol>
+            <p><strong>Example:</strong> If the starting player is Tom Brady and the destination player is Peyton Manning, then you can connect them via Wes Welker to create the path:
+            <p>Tom Brady → Wes Welker → Peyton Manning.</p>    
+            <p>Incorrect guesses send you in a random direction, signaled by a tornado. You will always be able to connect to the destination player, but you may be sent in a random direction.</p>
+            <button id="start-playing">Start Playing!</button>
+        </div>
+    </div>
+
+    <div id="about-popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>About Reception Connection Daily</h2>
+            <p>This game was created by Ethan Goldberg using GraphML and NFL Data Py, Flask, HTML, Python, JavaScript, and CSS.</p>
+            <p>Check out the source code on <a href="https://github.com/ethangold3/ReceptionConnectionDaily" target="_blank">GitHub</a>.</p>
+            <p>Connect with Ethan on <a href="https://www.linkedin.com/in/ethan-goldberg-56176016a/" target="_blank">LinkedIn</a>.</p>
+        </div>
+    </div>
     <header>
         <nav>
             <div class="logo">Reception Connection Daily</div>
             <div class="nav-links">
-                <a href="#">How to Play</a>
-                <a href="#">Leaderboard</a>
+                <a href="#" id="how-to-play-link">How to Play</a>
+                <a href="#" id="about-link">About</a>
             </div>
         </nav>
     </header>
@@ -26,19 +54,14 @@
             <h1>RECEPTION CONNECTION</h1>
             <p class="game-description">Connect the start player to the end player through NFL passing connections.</p>
             <div id="game-info">
-                <p>Start Player: <span id="start-player">{{ start_player }}</span></p>
-                <p>End Player: <span id="end-player">{{ end_player }}</span></p>
+                <p>Start Player: <span id="start-player" data-player-id="{{ start_player_id }}">{{ start_player }}</span></p>
+                <p>End Player: <span id="end-player" data-player-id="{{ end_player_id }}">{{ end_player }}</span></p>
                 <p>Current Player: <span id="current-player"></span></p>
             </div>
             <div id="player-input">
                 <input type="text" id="player-search" placeholder="Enter next player">
             </div>
             <div id="path-history"></div>
-        </div>
-        <div id="game-over" style="display: none;">
-            <h2>Congratulations! You've reached the destination.</h2>
-            <p>Your score: <span id="final-score"></span></p>
-            <button id="copy-result">Copy Result</button>
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

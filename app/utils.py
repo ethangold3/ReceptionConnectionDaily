@@ -17,5 +17,8 @@ def select_daily_players(G):
     return start_player, end_player
 
 def calculate_score(G, path):
+    if len(path) < 2:
+        return 0
+    
     total_weight = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path)-1))
-    return int(100000 / (1 + total_weight))  # Normalize and invert
+    return int(total_weight)
