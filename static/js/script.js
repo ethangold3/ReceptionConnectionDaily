@@ -169,7 +169,7 @@ $(document).ready(function() {
 
     function showCongratulationsPopup(score) {
         let currentDate = new Date().toISOString().split('T')[0];
-        let resultText = `ReceptionPConnectionDaily ${currentDate}\n`;
+        let resultText = `ReceptionConnectionDaily ${currentDate}\n`;
         resultText += `Score: ${score} (lower is better)\n`;
         resultText += `Path: ${pathHistory.map(item => item.player).join(' → ')}`;
     
@@ -196,13 +196,17 @@ $(document).ready(function() {
     
         $('#copy-result').on('click', function() {
             console.log(resultText);
+            
+            // Use the Clipboard API to copy the text
             navigator.clipboard.writeText(resultText).then(function() {
+                // Show feedback
                 $('#copy-feedback').fadeIn().delay(1500).fadeOut();
             }).catch(function(err) {
                 console.error('Failed to copy text: ', err);
                 alert('Failed to copy text. Please try again.');
             });
         });
+    
     
         $('#close-popup').on('click', function() {
             $('#congratulations-popup').remove();
