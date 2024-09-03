@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reception Connection Daily</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Reception Connection Daily</div>
+            <div class="nav-links">
+                <a href="#">How to Play</a>
+                <a href="#">Leaderboard</a>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="game-card">
+            <h1>RECEPTION CONNECTION</h1>
+            <p class="game-description">Connect the start player to the end player through NFL passing connections.</p>
+            <div id="game-info">
+                <p>Start Player: <span id="start-player">{{ start_player }}</span></p>
+                <p>End Player: <span id="end-player">{{ end_player }}</span></p>
+                <p>Current Player: <span id="current-player"></span></p>
+            </div>
+            <div id="player-input">
+                <input type="text" id="player-search" placeholder="Enter next player">
+            </div>
+            <div id="path-history"></div>
+        </div>
+        <div id="game-over" style="display: none;">
+            <h2>Congratulations! You've reached the destination.</h2>
+            <p>Your score: <span id="final-score"></span></p>
+            <button id="copy-result">Copy Result</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

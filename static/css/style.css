@@ -1,0 +1,142 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    color: #1c1e21;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #1877f2;
+    padding: 1rem;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 1rem;
+    font-weight: 400;
+}
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.game-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #1877f2;
+    font-weight: 700;
+}
+
+.game-description {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 300;
+    font-size: 1.1rem;
+}
+
+#game-info, #player-input, #path-history {
+    margin-bottom: 1.5rem;
+}
+
+#game-info p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+#player-search {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.path-item {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background-color: #e7f3ff;
+    color: #1877f2;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.path-item-emoji {
+    font-size: 1.2rem;
+    margin-right: 5px;
+}
+
+#game-over {
+    background-color: #e7f3ff;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+#game-over h2 {
+    color: #1877f2;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+#copy-result {
+    background-color: #1877f2;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+}
+
+#copy-result:hover {
+    background-color: #166fe5;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1877f2;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    font-weight: 500;
+}
