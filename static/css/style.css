@@ -1,14 +1,14 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f0f2f5;
-    color: #1c1e21;
+    background-color: #121212;
+    color: #e0e0e0;
     margin: 0;
     padding: 0;
     line-height: 1.6;
 }
 
 header {
-    background-color: #1877f2;
+    background-color: #1e1e1e;
     padding: 1rem;
 }
 
@@ -21,13 +21,13 @@ nav {
 }
 
 .logo {
-    color: #ffffff;
+    color: #bb86fc;
     font-size: 1.5rem;
     font-weight: 700;
 }
 
 .nav-links a {
-    color: #ffffff;
+    color: #bb86fc;
     text-decoration: none;
     margin-left: 1rem;
     font-weight: 400;
@@ -40,17 +40,17 @@ nav {
 }
 
 .game-card {
-    background-color: #ffffff;
+    background-color: #1e1e1e;
     border-radius: 8px;
     padding: 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     text-align: center;
-    color: #1877f2;
+    color: #bb86fc;
     font-weight: 700;
 }
 
@@ -59,6 +59,7 @@ h1 {
     margin-bottom: 2rem;
     font-weight: 300;
     font-size: 1.1rem;
+    color: #b0b0b0;
 }
 
 #game-info, #player-input, #path-history {
@@ -74,9 +75,11 @@ h1 {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
-    border: 1px solid #dddfe2;
+    border: 1px solid #3d3d3d;
     border-radius: 6px;
     font-family: 'Roboto', sans-serif;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
 }
 
 .path-item {
@@ -84,8 +87,8 @@ h1 {
     margin-right: 10px;
     margin-bottom: 10px;
     padding: 8px 12px;
-    background-color: #e7f3ff;
-    color: #1877f2;
+    background-color: #2a2a2a;
+    color: #bb86fc;
     border-radius: 20px;
     font-size: 0.9rem;
     font-weight: 400;
@@ -97,7 +100,7 @@ h1 {
 }
 
 #game-over {
-    background-color: #e7f3ff;
+    background-color: #2a2a2a;
     border-radius: 8px;
     padding: 2rem;
     text-align: center;
@@ -105,14 +108,14 @@ h1 {
 }
 
 #game-over h2 {
-    color: #1877f2;
+    color: #bb86fc;
     font-size: 1.8rem;
     margin-bottom: 1rem;
 }
 
 #copy-result {
-    background-color: #1877f2;
-    color: #ffffff;
+    background-color: #bb86fc;
+    color: #121212;
     border: none;
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
@@ -121,15 +124,15 @@ h1 {
     transition: background-color 0.3s;
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    z-index: 1001; /* Ensure it's above other elements */
+    z-index: 1001;
 }
 
 #copy-result:hover {
-    background-color: #166fe5;
+    background-color: #a66ffe;
 }
 
 #congratulations-popup {
-    z-index: 1000; /* Ensure the popup is above other elements */
+    z-index: 1000;
 }
 
 .popup {
@@ -140,24 +143,24 @@ h1 {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.4);
-    overflow-y: auto; /* Add this to allow scrolling */
+    background-color: rgba(0,0,0,0.7);
+    overflow-y: auto;
 }
 
 .popup-content {
-    background-color: #fefefe;
-    margin: 10% auto; /* Reduce top margin */
+    background-color: #1e1e1e;
+    margin: 10% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 90%; /* Increase width for mobile */
+    border: 1px solid #3d3d3d;
+    width: 90%;
     max-width: 600px;
     border-radius: 5px;
     position: relative;
-    box-sizing: border-box; /* Add this to include padding in width calculation */
+    box-sizing: border-box;
 }
 
 .close {
-    color: #aaa;
+    color: #b0b0b0;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -166,7 +169,7 @@ h1 {
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: #e0e0e0;
     text-decoration: none;
     cursor: pointer;
 }
@@ -176,24 +179,23 @@ h1 {
     margin: 20px auto 0;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #bb86fc;
+    color: #121212;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #start-playing:hover {
-    background-color: #45a049;
+    background-color: #a66ffe;
 }
-
 
 #congratulations-popup .popup-content {
     text-align: center;
 }
 
 #congratulations-popup h2 {
-    color: #1877f2;
+    color: #bb86fc;
     font-size: 2rem;
     margin-bottom: 1rem;
 }
@@ -214,25 +216,25 @@ h1 {
 }
 
 #copy-result {
-    background-color: #1877f2;
-    color: white;
+    background-color: #bb86fc;
+    color: #121212;
 }
 
 #copy-result:hover {
-    background-color: #166fe5;
+    background-color: #a66ffe;
 }
 
 #close-popup {
-    background-color: #e4e6eb;
-    color: #1c1e21;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
 }
 
 #close-popup:hover {
-    background-color: #d8dadf;
+    background-color: #3d3d3d;
 }
 
 #result-preview {
-    background-color: #f0f2f5;
+    background-color: #2a2a2a;
     border-radius: 5px;
     padding: 10px;
     margin: 15px 0;
@@ -242,7 +244,7 @@ h1 {
 #result-preview h3 {
     margin-top: 0;
     font-size: 1.2rem;
-    color: #1877f2;
+    color: #bb86fc;
 }
 
 #result-preview pre {
@@ -251,15 +253,15 @@ h1 {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
     margin: 0;
+    color: #e0e0e0;
 }
-
 
 #about-popup .popup-content {
     text-align: left;
 }
 
 #about-popup h2 {
-    color: #1877f2;
+    color: #bb86fc;
     font-size: 1.8rem;
     margin-bottom: 1rem;
 }
@@ -270,7 +272,7 @@ h1 {
 }
 
 #about-popup a {
-    color: #1877f2;
+    color: #bb86fc;
     text-decoration: none;
 }
 
@@ -278,40 +280,16 @@ h1 {
     text-decoration: underline;
 }
 
-
-
-.popup {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.popup-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 5px;
-    position: relative;
-}
-
-.close, .close-popup {
-    color: #aaa;
+.close-popup {
+    color: #b0b0b0;
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
 }
 
-.close:hover, .close:focus, .close-popup:hover, .close-popup:focus {
-    color: black;
+.close-popup:hover, .close-popup:focus {
+    color: #e0e0e0;
     text-decoration: none;
     cursor: pointer;
 }
@@ -320,26 +298,47 @@ h1 {
     font-size: 0.9em;
     font-weight: bold;
     vertical-align: middle;
+    color: #4caf50;
 }
 
 @media screen and (max-width: 600px) {
     .popup-content {
-        margin: 5% auto; /* Further reduce top margin on mobile */
-        width: 95%; /* Increase width on mobile */
-        padding: 15px; /* Reduce padding on mobile */
+        margin: 5% auto;
+        width: 95%;
+        padding: 15px;
     }
 
     h2 {
-        font-size: 1.5rem; /* Reduce heading size on mobile */
+        font-size: 1.5rem;
     }
 
     p, ol {
-        font-size: 0.9rem; /* Reduce text size on mobile */
+        font-size: 0.9rem;
     }
 
     #start-playing {
-        margin: 10px auto 0; /* Reduce margin on mobile */
-        padding: 8px 16px; /* Reduce padding on mobile */
-        font-size: 14px; /* Reduce font size on mobile */
+        margin: 10px auto 0;
+        padding: 8px 16px;
+        font-size: 14px;
     }
+}
+
+/* Styles for jQuery UI Autocomplete */
+.ui-autocomplete {
+    background-color: #2a2a2a;
+    border: 1px solid #3d3d3d;
+    color: #e0e0e0;
+}
+
+.ui-menu-item {
+    padding: 5px 10px;
+}
+
+.ui-menu-item:hover, .ui-state-active {
+    background-color: #3d3d3d;
+    color: #bb86fc;
+}
+
+.ui-helper-hidden-accessible {
+    display: none;
 }
