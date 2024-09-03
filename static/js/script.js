@@ -169,10 +169,13 @@ $(document).ready(function() {
 
     function showCongratulationsPopup(score) {
         let currentDate = new Date().toISOString().split('T')[0];
-        let resultText = `ReceptionConnectionDaily ${currentDate}\n`;
-        resultText += `Score: ${score} (lower is better)\n`;
-        resultText += `Path: ${pathHistory.map(item => item.player).join(' → ')}`;
-    
+        let resultText = `ReceptionConnectionDaily ${currentDate}\n\n`;
+        resultText += `🏈 Score: ${score} (lower is better)\n\n`;
+        resultText += `Path:\n`;
+        resultText += pathHistory.map((item, index) => {
+            let emoji = item.isRandom ? '🌪️' : '✅';
+            return `${emoji} ${index + 1}. ${item.player}`;
+        }).join('\n');
         let popupHtml = `
             <div id="congratulations-popup" class="popup">
                 <div class="popup-content">
