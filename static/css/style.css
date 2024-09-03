@@ -141,18 +141,19 @@ h1 {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.4);
+    overflow-y: auto; /* Add this to allow scrolling */
 }
-
 
 .popup-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 10% auto; /* Reduce top margin */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 90%; /* Increase width for mobile */
     max-width: 600px;
     border-radius: 5px;
     position: relative;
+    box-sizing: border-box; /* Add this to include padding in width calculation */
 }
 
 .close {
@@ -319,4 +320,26 @@ h1 {
     font-size: 0.9em;
     font-weight: bold;
     vertical-align: middle;
+}
+
+@media screen and (max-width: 600px) {
+    .popup-content {
+        margin: 5% auto; /* Further reduce top margin on mobile */
+        width: 95%; /* Increase width on mobile */
+        padding: 15px; /* Reduce padding on mobile */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Reduce heading size on mobile */
+    }
+
+    p, ol {
+        font-size: 0.9rem; /* Reduce text size on mobile */
+    }
+
+    #start-playing {
+        margin: 10px auto 0; /* Reduce margin on mobile */
+        padding: 8px 16px; /* Reduce padding on mobile */
+        font-size: 14px; /* Reduce font size on mobile */
+    }
 }
