@@ -7,7 +7,7 @@ def select_daily_players(G):
         node_strengths = {node: sum(G[node][neighbor]['weight'] for neighbor in G[node]) for node in G.nodes()}
         
         # Filter start candidates based on strength
-        start_candidates = [node for node in G.nodes() if node_strengths[node] >= 750]
+        start_candidates = [node for node in G.nodes() if node_strengths[node] >= 1000]
         
         if not start_candidates:
             continue
@@ -19,7 +19,7 @@ def select_daily_players(G):
         
         if nodes_at_distance_3:
             # Filter end candidates based on combined strength
-            end_candidates = [node for node in nodes_at_distance_3 if node_strengths[start_player] + node_strengths[node] >= 750]
+            end_candidates = [node for node in nodes_at_distance_3 if node_strengths[start_player] + node_strengths[node] >= 1000]
             
             if end_candidates:
                 end_player = random.choice(end_candidates)
