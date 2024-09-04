@@ -15,7 +15,7 @@ def select_daily_players(G):
         start_player = random.choice(start_candidates)
         
         # Get all nodes that are exactly 3 steps away from the start_player
-        nodes_at_distance_3 = [node for node, distance in nx.single_source_shortest_path_length(G, start_player).items() if distance == 4]
+        nodes_at_distance_3 = [node for node, distance in nx.single_source_shortest_path_length(G, start_player).items() if distance > 1]
         
         if nodes_at_distance_3:
             # Filter end candidates based on combined strength
@@ -24,7 +24,7 @@ def select_daily_players(G):
             if end_candidates:
                 end_player = random.choice(end_candidates)
                 # Verify that the shortest path is indeed 3
-                if nx.shortest_path_length(G, start_player, end_player) == 4:
+                if nx.shortest_path_length(G, start_player, end_player) >1 :
                     return start_player, end_player
 
 def calculate_score(G, path):
