@@ -129,7 +129,7 @@ $(document).ready(function() {
                 url: '/move',
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({current_player: currentPlayerId, next_player: selectedPlayerId}),
+                data: JSON.stringify({current_player: currentPlayerId, next_player: selectedPlayerId, path_history: pathHistory}),
                 success: function(data) {
                     incrementMoveCount(); // Increment move count for each attempt
                     currentPlayer = data.next_player;
@@ -149,7 +149,8 @@ $(document).ready(function() {
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("Error:", textStatus, errorThrown);
-                    alert("An error occurred. Please try again.");
+                    let errorMessage = jqXHR.responseJSON && jqXHR.responseJSON.error ? jqXHR.responseJSON.error : "An error occurred. Please try again.";
+                    showLittleErrorPopup(errorMessage);
                 }
             });
         }
@@ -165,6 +166,26 @@ $(document).ready(function() {
                 showCongratulationsPopup(data.score);
             }
         });
+    }
+
+    function showLittleErrorPopup(errorText) {
+        const popupId = 'error-popup-' + Date.now();
+        const popupHtml = `
+            <div id="${popupId}" class="little-error-popup animate__animated animate__fadeIn">
+                <span class="error-emoji">❌</span>
+                <span class="error-text">${errorText}</span>
+            </div>
+        `;
+        
+        $('body').append(popupHtml);
+        
+        const $popup = $(`#${popupId}`);
+        
+        // Automatically remove the popup after 2 seconds
+        setTimeout(() => {
+            $popup.removeClass('animate__fadeIn').addClass('animate__fadeOut');
+            setTimeout(() => $popup.remove(), 500);
+        }, 2000);
     }
 
     function showCongratulationsPopup(score) {

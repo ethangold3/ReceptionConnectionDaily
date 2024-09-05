@@ -24,6 +24,7 @@ def move():
     data = request.json
     current_player_id = data['current_player']
     next_player_id = data['next_player']
+    path_history = data['path_history']
     
     logging.debug(f"Attempting move from {current_player_id} to {next_player_id}")
     
@@ -34,6 +35,10 @@ def move():
     if next_player_id not in G.nodes:
         logging.error(f"Next player {next_player_id} not in graph")
         return jsonify({'error': 'Next player not found'}), 400
+
+    if next_player_id in [item['id'] for item in path_history]:
+        logging.error(f"Player {next_player_id} already in path history")
+        return jsonify({'error': 'Player already in path'}), 400
 
     if G.has_edge(current_player_id, next_player_id) or G.has_edge(next_player_id, current_player_id):
         logging.debug(f"Valid move from {current_player_id} to {next_player_id}")
