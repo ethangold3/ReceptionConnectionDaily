@@ -29,23 +29,23 @@ def update_daily_players():
     # Delete any existing entry for today
     cursor.execute('DELETE FROM daily_players WHERE date = %s', (today,))
     conn.commit()
-    
     # Generate new entry
     while True:
         start_player = random.choice(list(G.nodes()))
-        end_player = random.choice(list(G.nodes()))
+        start_strength = calculate_cumulative_strength(start_player)
         
-        if start_player != end_player:
-            shortest_path_length = calculate_shortest_path(start_player, end_player)
-            start_strength = calculate_cumulative_strength(start_player)
-            end_strength = calculate_cumulative_strength(end_player)
-            total_strength = start_strength + end_strength
+        if start_strength >= 5000:
+            # Find nodes more than 1 edge away and with strength >= 5000
+            potential_end_players = [
+                node for node in G.nodes()
+                if nx.shortest_path_length(G, start_player, node) > 1
+                and calculate_cumulative_strength(node) >= 5000
+            ]
             
-            if (shortest_path_length and 
-                shortest_path_length > 1 and 
-                3 <= shortest_path_length <= 6 and 
-                total_strength >= 5000):
-                break
+            if potential_end_players:
+                end_player = random.choice(potential_end_players)
+                shortest_path_length = nx.shortest_path_length(G, start_player, end_player)
+                    break
     
     # Insert the new entry
     cursor.execute('''
