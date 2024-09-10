@@ -17,36 +17,46 @@ def calculate_shortest_path(start_player, end_player):
     except nx.NetworkXNoPath:
         return None
 
+def calculate_cumulative_strength(player):
+    return sum(G[player][neighbor]['weight'] for neighbor in G.neighbors(player))
+
 def update_daily_players():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
     
     today = date.today().isoformat()
     
-    # Check if there's already an entry for today
-    cursor.execute('SELECT * FROM daily_players WHERE date = %s', (today,))
-    existing_entry = cursor.fetchone()
+    # Delete any existing entry for today
+    cursor.execute('DELETE FROM daily_players WHERE date = %s', (today,))
+    conn.commit()
     
-    if not existing_entry:
-        # If no entry exists, insert a new one
-        while True:
-            start_player = random.choice(list(G.nodes()))
-            end_player = random.choice(list(G.nodes()))
-            if start_player != end_player:
-                shortest_path_length = calculate_shortest_path(start_player, end_player)
-                if shortest_path_length and 3 <= shortest_path_length <= 6:
-                    break
+    # Generate new entry
+    while True:
+        start_player = random.choice(list(G.nodes()))
+        end_player = random.choice(list(G.nodes()))
         
-        cursor.execute('''
-        INSERT INTO daily_players (date, start_player, end_player)
-        VALUES (%s, %s, %s)
-        ''', (today, start_player, end_player))
-        
-        conn.commit()
-        print(f"Updated daily players: Date = {today}, Start = {start_player}, End = {end_player}")
-        print(f"Shortest path length: {shortest_path_length}")
-    else:
-        print(f"Entry for {today} already exists. No update needed.")
+        if start_player != end_player:
+            shortest_path_length = calculate_shortest_path(start_player, end_player)
+            start_strength = calculate_cumulative_strength(start_player)
+            end_strength = calculate_cumulative_strength(end_player)
+            total_strength = start_strength + end_strength
+            
+            if (shortest_path_length and 
+                shortest_path_length > 1 and 
+                3 <= shortest_path_length <= 6 and 
+                total_strength >= 5000):
+                break
+    
+    # Insert the new entry
+    cursor.execute('''
+    INSERT INTO daily_players (date, start_player, end_player)
+    VALUES (%s, %s, %s)
+    ''', (today, start_player, end_player))
+    
+    conn.commit()
+    print(f"Updated daily players: Date = {today}, Start = {start_player}, End = {end_player}")
+    print(f"Shortest path length: {shortest_path_length}")
+    print(f"Total strength: {total_strength}")
     
     cursor.close()
     conn.close()
