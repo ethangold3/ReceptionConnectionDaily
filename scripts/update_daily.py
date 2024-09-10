@@ -27,7 +27,7 @@ def update_daily_players():
     max_attempts = 1000  # Limit the number of attempts to find valid players
     for _ in range(max_attempts):
         # Find a start player with strength >= 5000
-        strong_nodes = [node for node in G.nodes() if calculate_cumulative_strength(node) >= 5000]
+        strong_nodes = [node for node in G.nodes() if calculate_cumulative_strength(node) >= 3500]
         if not strong_nodes:
             raise Exception("No nodes with cumulative strength >= 5000 found in the graph")
         
@@ -37,7 +37,7 @@ def update_daily_players():
         nodes_two_away = set(nx.single_source_shortest_path_length(G, start_player, cutoff=2).keys()) - set(G.neighbors(start_player)) - {start_player}
         
         # Filter nodes with strength >= 5000
-        strong_end_nodes = [node for node in nodes_two_away if calculate_cumulative_strength(node) >= 5000]
+        strong_end_nodes = [node for node in nodes_two_away if calculate_cumulative_strength(node) >= 3500]
         
         if strong_end_nodes:
             end_player = random.choice(strong_end_nodes)
