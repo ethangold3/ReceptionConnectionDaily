@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_talisman.talisman import Talisman
+# from flask_talisman.talisman import Talisman
 import os
 
 template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'templates'))
@@ -35,6 +35,6 @@ csp = {
     'img-src': ["'self'", 'data:'],
 }
 
-Talisman(app, force_https=True, content_security_policy=csp)
+# Talisman(app, force_https=True, content_security_policy=csp)
 
 from app import routes
