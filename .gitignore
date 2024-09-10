@@ -38,3 +38,5 @@ flask_session/
 
 # Heroku files
 *.env
+
+*.db

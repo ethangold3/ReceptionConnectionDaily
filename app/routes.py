@@ -4,18 +4,36 @@ import networkx as nx
 from app.utils import calculate_score
 import random
 import logging
+import sqlite3
+from datetime import date
+import os
 
 logging.basicConfig(level=logging.DEBUG)
 
 
 G = nx.read_graphml("data/passing_network.graphml")
 
-
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+db_path = os.path.join(project_root, "data", "daily_players.db")
 
 @app.route('/')
 def index():
-    with open('data/daily_players.txt', 'r') as f:
-        date, start_player_id, end_player_id = f.read().splitlines()
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    
+    today = date.today().isoformat()
+    cursor.execute('SELECT start_player, end_player FROM daily_players WHERE date = ?', (today,))
+    result = cursor.fetchone()
+    
+    conn.close()
+    
+    if result:
+        start_player_id, end_player_id = result
+    else:
+        # Handle the case where no data is found for today
+        logging.error(f"No daily players found for {today}")
+        return render_template('error.html', message="No game available for today"), 404
+
     start_player = format_player(start_player_id)
     end_player = format_player(end_player_id)
     return render_template('index.html', start_player=start_player, end_player=end_player, start_player_id=start_player_id, end_player_id=end_player_id)
