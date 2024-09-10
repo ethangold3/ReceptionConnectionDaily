@@ -64,10 +64,10 @@ def update_daily_players():
     
     conn.commit()
     print(f"Updated daily players: Date = {today}, Start = {start_player}, End = {end_player}")
-    print(f"Shortest path length: {shortest_path_length}")
-    print(f"Start player strength: {start_strength}")
-    print(f"End player strength: {end_strength}")
-    print(f"Total strength: {total_strength}")
+    #print(f"Shortest path length: {shortest_path_length}")
+    #print(f"Start player strength: {start_strength}")
+    #print(f"End player strength: {end_strength}")
+    #print(f"Total strength: {total_strength}")
     
     cursor.close()
     conn.close()
