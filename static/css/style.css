@@ -40,10 +40,12 @@ nav {
 }
 
 .game-card {
+    position: relative;
     background-color: #1e1e1e;
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding-bottom: 60px; 
 }
 
 h1 {
@@ -61,6 +63,12 @@ h1 {
     font-size: 1.1rem;
     color: #b0b0b0;
 }
+#path-history {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
 
 #game-info, #player-input, #path-history {
     margin-bottom: 1.5rem;
@@ -71,32 +79,28 @@ h1 {
     margin-bottom: 0.5rem;
 }
 
-#player-search {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #3d3d3d;
-    border-radius: 6px;
-    font-family: 'Roboto', sans-serif;
-    background-color: #2a2a2a;
-    color: #e0e0e0;
-}
+
+
 
 .path-item {
-    display: inline-block;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    margin: 5px 0;
     padding: 8px 12px;
     background-color: #2a2a2a;
-    color: #bb86fc;
+    color: #e0e0e0;
     border-radius: 20px;
     font-size: 0.9rem;
     font-weight: 400;
 }
 
+
 .path-item-emoji {
     font-size: 1.2rem;
     margin-right: 5px;
+}
+.path-item:last-child {
+    color: #bb86fc;
 }
 
 #game-over {
@@ -322,7 +326,22 @@ h1 {
         font-size: 14px;
     }
 }
+/* Adjust for smaller screens */
+@media screen and (max-width: 600px) {
+    .player-endpoints {
+        flex-direction: column;
+    }
 
+    .player-box {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .arrow {
+        transform: rotate(90deg);
+        margin: 1rem 0;
+    }
+}
 /* Styles for jQuery UI Autocomplete */
 .ui-autocomplete {
     background-color: #2a2a2a;
@@ -460,4 +479,112 @@ h1 {
 @keyframes fadeOut {
     from { opacity: 1; transform: translate(-50%, 0); }
     to { opacity: 0; transform: translate(-50%, -20px); }
+}
+
+
+.player-endpoints {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+
+.player-box {
+    text-align: center;
+    width: 30%;
+}
+.arrow {
+    font-size: 2rem;
+    color: #bb86fc;
+}
+.player-box p {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.player-box span {
+    display: block;
+    font-size: 1.1rem;
+}
+
+.current-player-box {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.current-player-box p {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+
+#current-player {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #bb86fc;
+}
+
+#player-input {
+    margin-bottom: 1.5rem;
+}
+
+#player-search {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #3d3d3d;
+    border-radius: 6px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+#best-path-info {
+    width: 30%;
+    background-color: #2a2a2a;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#best-path-info p {
+    margin: 0;
+}
+
+#best-path-strength {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#strikes-display {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+#strike-emojis {
+    margin-right: 10px;
+}
+
+#hint-container {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+#reveal-hint {
+    background-color: #bb86fc;
+    color: #121212;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#reveal-hint:hover {
+    background-color: #9d65f5;
 }

@@ -1,5 +1,11 @@
 $(document).ready(function() {
 
+    $('#reveal-hint').on('click', function() {
+        $('#best-path-info').slideToggle();
+        $(this).text(function(i, text) {
+            return text === "Reveal Hint" ? "Hide Hint" : "Reveal Hint";
+        });
+    });
 
     // Show the popup when the page loads
     $('#how-to-play-popup').show();
@@ -70,13 +76,49 @@ $(document).ready(function() {
         $('#current-player').text(currentPlayer).addClass('animate__animated animate__pulse');
         setTimeout(() => $('#current-player').removeClass('animate__animated animate__pulse'), 1000);
         
-        let pathHtml = pathHistory.map(item => {
-            let emoji = item.isRandom ? '🌪️' : '✅';
-            return `<span class="path-item"><span class="path-item-emoji">${emoji}</span>${item.player}</span>`;
-        }).join(' ');
+        let pathHtml = pathHistory.map((item, index) => {
+            let emoji = item.isRandom ? '🌪️' : '🏈';
+            let arrow = index < pathHistory.length - 1 ? ' ➔ ' : '';
+            return `<span class="path-item">${emoji} ${item.player}${arrow}</span>`;
+        }).join('');
         
         $('#path-history').html(pathHtml);
         updateScoreboard();
+        updateBestPath();
+    }
+    function updateBestPath() {
+        $.ajax({
+            url: '/best_path',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({current_player: currentPlayerId, end_player: endPlayerId}),
+            success: function(data) {
+                let strength = data.best_path_strength;
+                $('#best-path-strength').text(strength.toLocaleString());
+                
+                // Calculate color based on strength
+                let red = Math.min(255, Math.max(0, Math.round(255 * (10000 - strength) / 10000)));
+                let green = Math.min(255, Math.max(0, Math.round(255 * strength / 10000)));
+                $('#best-path-strength').css('color', `rgb(${red}, ${green}, 0)`);
+            }
+        });
+    }
+    function updateStrikes() {
+        let filledStrikes = '❌'.repeat(strikes);
+        let emptyStrikes = '⚪'.repeat(3 - strikes);
+        $('#strike-emojis').text(filledStrikes + emptyStrikes);
+        $('#strike-count').text(`${strikes}/3 strikes`);
+    }
+    function addStrike() {
+        console.log("Adding strike. Current strikes:", strikes);
+        if (strikes < 3) {
+            strikes++;
+            updateStrikes();
+        }
+        if (strikes === 3) {
+            gameOver(false);
+        }
+        console.log("After adding strike. Current strikes:", strikes);
     }
 
     function updateScoreboard() {
@@ -94,15 +136,6 @@ $(document).ready(function() {
         updateScoreboard();
     }
 
-    function addStrike() {
-        if (strikes < 6) {
-            strikes++;
-            updateScoreboard();
-        }
-        if (strikes === 6) {
-            gameOver();
-        }
-    }
 
     $.getJSON('/autocomplete', { q: startPlayer.split(' (')[0] }, function(data) {
         if (data.length > 0) {
@@ -131,19 +164,20 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 data: JSON.stringify({current_player: currentPlayerId, next_player: selectedPlayerId, path_history: pathHistory}),
                 success: function(data) {
-                    incrementMoveCount(); // Increment move count for each attempt
-                    currentPlayer = data.next_player;
-                    currentPlayerId = selectedPlayerId;
-                    pathHistory.push({ player: currentPlayer, id: currentPlayerId, isRandom: !data.success });
-                    updateGameInfo();
                     if (data.success) {
+                        // incrementMoveCount(); // Increment move count for each attempt
+                        currentPlayer = data.next_player;
+                        currentPlayerId = selectedPlayerId;
+                        pathHistory.push({ player: currentPlayer, id: currentPlayerId, isRandom: !data.success });
+                        updateGameInfo();
                         showPopup('Correct move!');
+                        if (currentPlayer === endPlayer) {
+                            gameOver(true);;
+                        }
                     } else {
-                        showPopup('Random move!');
-                        addStrike(); // Add a strike for random moves
-                    }
-                    if (currentPlayer === endPlayer) {
-                        gameOver();
+                        console.log("Invalid move, adding strike");
+                        addStrike();
+                        showPopup('Incorrect move! Strike added.');
                     }
                     $('#player-search').val('');
                 },
@@ -156,14 +190,18 @@ $(document).ready(function() {
         }
     });
 
-    function gameOver() {
+    function gameOver(reachedEnd = false) {
         $.ajax({
             url: '/calculate_score',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({path: pathHistory.map(item => item.id)}),
             success: function(data) {
-                showCongratulationsPopup(data.score);
+                if (reachedEnd) {
+                    showCongratulationsPopup(data.score);
+                } else {
+                    showGameOverPopup(data.score);
+                }
             }
         });
     }
@@ -239,6 +277,57 @@ $(document).ready(function() {
             }
         });
     }
+    
+
+function showGameOverPopup(score) {
+    let currentDate = new Date().toISOString().split('T')[0];
+    let resultText = `ReceptionConnectionDaily ${currentDate}\n\n`;
+    resultText += `❌ Failed to connect the players\n`;
+    resultText += `🏈 Score: ${score} (lower is better)\n\n`;
+    resultText += `Path:\n`;
+    resultText += pathHistory.map((item, index) => {
+        let emoji = item.isRandom ? '🌪️' : '✅';
+        return `${emoji} ${index + 1}. ${item.player}`;
+    }).join('\n');
+    let popupHtml = `
+        <div id="game-over-popup" class="popup">
+            <div class="popup-content">
+                <h2>Game Over</h2>
+                <p>You've reached 3 strikes before connecting the players.</p>
+                <p>Your score: <span id="final-score">${score}</span></p>
+                <div id="result-preview">
+                    <h3>Result Preview:</h3>
+                    <pre>${resultText}</pre>
+                </div>
+                <button id="copy-result">Copy Result</button>
+                <span id="copy-feedback" style="display: none; color: green; margin-left: 10px;">Copied!</span>
+                <button id="close-popup">Close</button>
+                <p>Come back tomorrow for a new pairing of players!</p>
+            </div>
+        </div>
+    `;
+    $('body').append(popupHtml);
+    $('#game-over-popup').show();
+
+    $('#copy-result').on('click', function() {
+        navigator.clipboard.writeText(resultText).then(function() {
+            $('#copy-feedback').fadeIn().delay(1500).fadeOut();
+        }).catch(function(err) {
+            console.error('Failed to copy text: ', err);
+            alert('Failed to copy text. Please try again.');
+        });
+    });
+
+    $('#close-popup').on('click', function() {
+        $('#game-over-popup').remove();
+    });
+
+    $(window).on('click', function(event) {
+        if (event.target.id === 'game-over-popup') {
+            $('#game-over-popup').remove();
+        }
+    });
+}
 
     function showPopup(message) {
         let popupId = 'popup-' + Date.now();
@@ -255,5 +344,7 @@ $(document).ready(function() {
             setTimeout(() => $(`#${popupId}`).remove(), 1000);
         });
     }
+    updateBestPath();
     updateGameInfo();
+    updateStrikes();
 });

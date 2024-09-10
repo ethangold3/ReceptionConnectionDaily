@@ -62,27 +62,8 @@ def move():
         logging.debug(f"Valid move from {current_player_id} to {next_player_id}")
         return jsonify({'success': True, 'next_player': format_player(next_player_id)})
     else:
-        logging.debug(f"Invalid move. Finding random 2-step move from {current_player_id}")
-        # Random 2-step move
-        try:
-            path = nx.single_source_shortest_path(G, current_player_id, cutoff=2)
-            two_step_players = [p for p in path if len(path[p]) == 3]
-            if two_step_players:
-                random_next_id = random.choice(two_step_players)
-                logging.debug(f"Random 2-step move: {current_player_id} to {random_next_id}")
-                return jsonify({
-                    'success': False, 
-                    'next_player': format_player(random_next_id)
-                })
-            else:
-                logging.debug(f"No 2-step move found. Staying at {current_player_id}")
-                return jsonify({
-                    'success': False, 
-                    'next_player': format_player(current_player_id)
-                })
-        except nx.NetworkXError as e:
-            logging.error(f"NetworkX error: {str(e)}")
-            return jsonify({'error': 'Graph error'}), 500
+        logging.debug(f"Invalid move from {current_player_id} to {next_player_id}")
+        return jsonify({'success': False})
 
 @app.route('/autocomplete', methods=['GET'])
 def autocomplete():
@@ -98,6 +79,20 @@ def autocomplete():
         if len(matches) == 10:  # Stop after finding 10 matches
             break
     return jsonify(matches)
+
+from app.utils import calculate_best_path
+
+@app.route('/best_path', methods=['POST'])
+def best_path():
+    data = request.json
+    current_player_id = data['current_player']
+    end_player_id = data['end_player']
+    try:
+        best_path_strength = calculate_best_path(G, current_player_id, end_player_id)
+        return jsonify({'best_path_strength': best_path_strength})
+    except Exception as e:
+        app.logger.error(f"Error in best_path: {str(e)}")
+        return jsonify({'error': 'Unable to calculate best path'}), 
 
 @app.route('/calculate_score', methods=['POST'])
 def calculate_score_route():

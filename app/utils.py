@@ -33,3 +33,20 @@ def calculate_score(G, path):
     
     total_weight = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path)-1))
     return int(total_weight)
+
+
+def calculate_best_path(G, start, end):
+    try:
+        # Create a copy of the graph with non-negative weights
+        G_non_negative = G.copy()
+        for u, v, data in G_non_negative.edges(data=True):
+            data['weight'] = max(0, data['weight'])  # Convert negative weights to zero
+        
+        path = nx.shortest_path(G_non_negative, start, end, weight='weight')
+        total_weight = sum(G_non_negative[path[i]][path[i+1]]['weight'] for i in range(len(path)-1))
+        return int(total_weight)
+    except nx.NetworkXNoPath:
+        return float('inf')  # Return infinity if no path exists
+    except nx.NetworkXError as e:
+        print(f"NetworkX error in calculate_best_path: {str(e)}")
+        return float('inf')  # Return infinity if there's an error

@@ -54,16 +54,40 @@
     <div class="container">
         <div class="game-card">
             <h1>RECEPTION CONNECTION</h1>
+            <div id="strikes-display">
+                <span id="strike-emojis">⚪⚪⚪</span>
+                <span id="strike-count">0/3 strikes</span>
+            </div>
             <p class="game-description">Connect the start player to the end player through NFL passing connections.</p>
             <div id="game-info">
-                <p>Start Player: <span id="start-player" data-player-id="{{ start_player_id }}">{{ start_player }}</span></p>
-                <p>End Player: <span id="end-player" data-player-id="{{ end_player_id }}">{{ end_player }}</span></p>
-                <p>Current Player: <span id="current-player"></span></p>
+                <div class="player-endpoints">
+                    <div class="player-box start-player">
+                        <p>Start Player:</p>
+                        <span id="start-player" data-player-id="{{ start_player_id }}">{{ start_player }}</span>
+                    </div>
+                    <div class="arrow">➔</div>
+                    <div class="player-box end-player">
+                        <p>End Goal Player:</p>
+                        <span id="end-player" data-player-id="{{ end_player_id }}">{{ end_player }}</span>
+                    </div>
+                    
+                </div>
+                <div class="current-player-box">
+                    <p>Current Player:</p>
+                    <span id="current-player"></span>
+                </div>
             </div>
             <div id="player-input">
                 <input type="text" id="player-search" placeholder="Enter next player">
             </div>
             <div id="path-history"></div>
+        </div>
+        <div id="hint-container">
+            <button id="reveal-hint">Reveal Hint</button>
+            <div id="best-path-info" style="display: none;">
+                <p>Best possible path</p>
+                <p><span id="best-path-strength"></span> yards</p>
+            </div>
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
