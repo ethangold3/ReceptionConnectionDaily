@@ -1,22 +1,27 @@
-import sqlite3
 import os
+import psycopg2
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-db_path = os.path.join(project_root, "data", "daily_players.db")
+# Get the DATABASE_URL from Heroku's environment variables
+DATABASE_URL = os.environ['DATABASE_URL']
 
 def setup_database():
-    conn = sqlite3.connect(db_path)
+    # Connect to the default database
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     cursor = conn.cursor()
     
+    # Create the daily_players table if it doesn't exist
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS daily_players (
-        date TEXT PRIMARY KEY,
+        date DATE PRIMARY KEY,
         start_player TEXT NOT NULL,
         end_player TEXT NOT NULL
     )
     ''')
     
     conn.commit()
+    cursor.close()
     conn.close()
     
     print("Database setup complete.")

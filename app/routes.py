@@ -7,31 +7,33 @@ import logging
 import sqlite3
 from datetime import date
 import os
+import psycopg2
 
 logging.basicConfig(level=logging.DEBUG)
 
+# Get the DATABASE_URL from Heroku's environment variables
+DATABASE_URL = os.environ['DATABASE_URL']
 
+# Load the graph
 G = nx.read_graphml("data/passing_network.graphml")
-
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-db_path = os.path.join(project_root, "data", "daily_players.db")
 
 @app.route('/')
 def index():
-    conn = sqlite3.connect(db_path)
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
     
     today = date.today().isoformat()
-    cursor.execute('SELECT start_player, end_player FROM daily_players WHERE date = ?', (today,))
+    cursor.execute('SELECT start_player, end_player FROM daily_players WHERE date = %s', (today,))
     result = cursor.fetchone()
     
+    cursor.close()
     conn.close()
     
     if result:
         start_player_id, end_player_id = result
     else:
         # Handle the case where no data is found for today
-        logging.error(f"No daily players found for {today}")
+        app.logger.error(f"No daily players found for {today}")
         return render_template('error.html', message="No game available for today"), 404
 
     start_player = format_player(start_player_id)
