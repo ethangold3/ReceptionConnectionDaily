@@ -45,7 +45,7 @@ def update_daily_players():
             if potential_end_players:
                 end_player = random.choice(potential_end_players)
                 shortest_path_length = nx.shortest_path_length(G, start_player, end_player)
-                    break
+                break
     
     # Insert the new entry
     cursor.execute('''
