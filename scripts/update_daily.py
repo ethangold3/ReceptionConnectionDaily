@@ -24,32 +24,36 @@ def update_daily_players():
     conn.commit()
     
     # Generate new entry
+
     max_attempts = 1000  # Limit the number of attempts to find valid players
-    for _ in range(max_attempts):
-        # Find a start player with strength >= 5000
-        strong_nodes = [node for node in G.nodes() if calculate_cumulative_strength(node) >= 2500]
-        if not strong_nodes:
-            raise Exception("No nodes with cumulative strength >= 5000 found in the graph")
-        
-        start_player = random.choice(strong_nodes)
-        
-        # Find nodes more than 1 edge away
-        nodes_two_away = set(nx.single_source_shortest_path_length(G, start_player, cutoff=2).keys()) - set(G.neighbors(start_player)) - {start_player}
-        
-        # Filter nodes with strength >= 5000
-        strong_end_nodes = [node for node in nodes_two_away if calculate_cumulative_strength(node) >= 5000]
-        
-        if strong_end_nodes:
-            end_player = random.choice(strong_end_nodes)
-            shortest_path_length = nx.shortest_path_length(G, start_player, end_player)
-            start_strength = calculate_cumulative_strength(start_player)
-            end_strength = calculate_cumulative_strength(end_player)
-            total_strength = start_strength + end_strength
-            
-            if 2 <= shortest_path_length:
-                break
+
+    if today.month == 9 and today.day == 10:  # September 10th
+        start_player = "00-0020531"
+        end_player = "00-0034869"
     else:
-        raise Exception("Could not find suitable players after maximum attempts")
+        for _ in range(max_attempts):
+            # Find a start player with strength >= 5000
+            strong_nodes = [node for node in G.nodes() if calculate_cumulative_strength(node) >= 2500]
+            if not strong_nodes:
+                raise Exception("No nodes with cumulative strength >= 5000 found in the graph")
+            
+            start_player = random.choice(strong_nodes)
+            
+            # Find nodes more than 1 edge away
+            nodes_two_away = set(nx.single_source_shortest_path_length(G, start_player, cutoff=2).keys()) - set(G.neighbors(start_player)) - {start_player}
+            
+            # Filter nodes with strength >= 5000
+            strong_end_nodes = [node for node in nodes_two_away if calculate_cumulative_strength(node) >= 5000]
+            
+            if strong_end_nodes:
+                end_player = random.choice(strong_end_nodes)
+                shortest_path_length = nx.shortest_path_length(G, start_player, end_player)
+                start_strength = calculate_cumulative_strength(start_player)
+                end_strength = calculate_cumulative_strength(end_player)
+                total_strength = start_strength + end_strength
+                
+                if 2 <= shortest_path_length:
+                    break
 
     # Insert the new entry
     cursor.execute('''
