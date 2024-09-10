@@ -18,6 +18,7 @@ def update_daily_players():
     cursor = conn.cursor()
     
     today = date.today().isoformat()
+    temp_date = date.today()
     
     # Delete any existing entry for today
     cursor.execute('DELETE FROM daily_players WHERE date = %s', (today,))
@@ -27,7 +28,7 @@ def update_daily_players():
 
     max_attempts = 1000  # Limit the number of attempts to find valid players
 
-    if today.month == 9 and today.day == 10:  # September 10th
+    if temp_date.month == 9 and temp_date.day == 10:  # September 10th
         start_player = "00-0020531"
         end_player = "00-0034869"
     else:
